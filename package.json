@@ -1,0 +1,21 @@
+{
+  "name": "orm_sequelize_planilha_de_orcamento",
+  "version": "1.0.0",
+  "description": "Planilha de Orçamento",
+  "main": "./api/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./api/index.js"
+  },
+  "author": "Leonardo luz",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "mysql2": "^3.0.1",
+    "nodemon": "^2.0.20",
+    "path": "^0.12.7",
+    "sequelize": "^6.28.0",
+    "sequelize-cli": "^6.6.0"
+  }
+}
