@@ -2,10 +2,10 @@
   "name": "orm_sequelize_planilha_de_orcamento",
   "version": "1.0.0",
   "description": "Planilha de Orçamento",
-  "main": "./api/index.js",
+  "main": "./db/api/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./api/index.js"
+    "start": "nodemon ./db/api/index.js"
   },
   "author": "Leonardo luz",
   "license": "ISC",
