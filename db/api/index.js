@@ -1,14 +1,13 @@
 const express = require('express');
-const bodyParser = require('body-parser')
-
+const routes = require('./routes')
+/* Métodos do express e porta do servidor */
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(bodyParser.json())
-app.get('/teste', (req, res) => {
-    res.status(200).json({ msg: `Testando porta ${port}` })
-})
+/* Passando rotas para app gerenciar */
+routes(app)
 
+/* Servidor */
 app.listen(port, () => {
     console.log(`Servidor escutando em http://localhost:${port}`)
 })
