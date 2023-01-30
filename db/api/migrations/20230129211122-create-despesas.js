@@ -36,4 +36,4 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Despesas');
   }
-};
+};202301301234

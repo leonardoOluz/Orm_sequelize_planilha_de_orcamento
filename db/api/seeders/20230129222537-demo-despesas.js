@@ -6,6 +6,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('Despesas', [
       {
+        categoria: "Moradia",
         descricao: "Aluguel",
         valor: 650.50,
         data: "2023-01-29",
@@ -14,6 +15,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
+        categoria: "Outras",
         descricao: "Prestação do carro",
         valor: 390.55,
         data: "2023-01-30",
