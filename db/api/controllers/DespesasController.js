@@ -41,7 +41,7 @@ class DespesasControllers {
     static async deletarDespesaPorId(req, res) {
         const {id} = req.params;
         try {
-            await database.Despesa.destroy({where: {id: Number(id)}})
+            await database.Despesas.destroy({where: {id: Number(id)}})
             return res.status(201).json({message: `Despesa de id: ${id}, deletada com sucesso!`})
         } catch (error) {
             return res.status(500).json({message: `Erro: ${error}`})
