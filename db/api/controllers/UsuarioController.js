@@ -1,5 +1,5 @@
-const dataBase = require('../models') 
-const {UsuariosServices} = require('../services')
+const dataBase = require('../models')
+const { UsuariosServices } = require('../services')
 const usuario = new UsuariosServices()
 
 class UsuarioController {
@@ -23,7 +23,7 @@ class UsuarioController {
             return res.status(201).json(usuarioId)
         } catch (error) {
             if (error.message === 'Usuário inexistente') {
-                return res.status(400).json({ mensagem: `${error.message}`})
+                return res.status(400).json({ mensagem: `${error.message}` })
             }
             return res.status(500).json({ msg: `Erro ${error.message}` })
         }
@@ -32,10 +32,21 @@ class UsuarioController {
     static async criarUsuario(req, res) {
         const usuarioNovo = req.body
         try {
-            const novoUsuario = await dataBase.Usuario.create(usuarioNovo)
+            if (Object.keys(usuarioNovo).length === 0) {
+                throw new Error(`Campo de usuário vazio!`)
+            } else if (!usuarioNovo.nome || !usuarioNovo.email || !usuarioNovo.senha) {
+                throw new Error(`Campos obrigatorios vazio, preencha os campos`)
+            }
+            const novoUsuario = await usuario.criarDataBase(usuarioNovo)
             return res.status(201).json(novoUsuario)
         } catch (error) {
-            return res.status(500).json({ msg: `erro ${error}` })
+            if (error.message === `Campo de usuário vazio!`) {
+                return await res.status(400).json({ mensagem: `${error.message}` })
+            } else if (error.message === `Campos obrigatorios vazio, preencha os campos`) {
+                return await res.status(400).json({ mensagem: `${error.message}` })
+            } else {
+                return await res.status(500).json({ mensagem: `${error}` })
+            }
         }
     }
     /* Atualizar usuario */
@@ -43,21 +54,38 @@ class UsuarioController {
         const { id } = req.params
         const atualizaUsuario = req.body
         try {
-            await dataBase.Usuario.update(atualizaUsuario, { where: { id: Number(id) } })
-            const usuarioAtualizado = await dataBase.Usuario.findOne({ where: { id: Number(id) } })
+            if (Object.keys(atualizaUsuario).length === 0) {
+                throw new Error(`Campo de usuário vazio!`)
+            } else if (!atualizaUsuario.nome || !atualizaUsuario.email || !atualizaUsuario.senha) {
+                throw new Error(`Campos obrigatorios vazio, preencha os campos`)
+            }
+            const usuarioAtualizado = await usuario.modificarDataBasePorId(atualizaUsuario, { where: { id: Number(id) } })
             res.status(200).json(usuarioAtualizado)
         } catch (error) {
-            res.status(500).json({ msg: `erro ${error}` })
+            if (error.message === `Campo de usuário vazio!`) {
+                return await res.status(400).json({ mensagem: `${error.message}` })
+            } else if (error.message === `Campos obrigatorios vazio, preencha os campos`) {
+                return await res.status(400).json({ mensagem: `${error.message}` })
+            } else {
+                return await res.status(500).json({ mensagem: `${error}` })
+            }
         }
     }
     /* Deletar usuário */
     static async deletarUsuario(req, res) {
         const { id } = req.params;
         try {
-            await dataBase.Usuario.destroy({ where: { id: Number(id) } })
-            return res.status(201).json({ msg: `Usuario de id: ${id} deletado` })
+            if (await usuario.excluirDataBasePorId({ where: { id: Number(id) } })) {
+                return res.status(201).json({ msg: `Usuario de id: ${id} deletado` });
+            } else {
+                throw new Error(`Id de inexistente`)
+            }
+
         } catch (error) {
-            return res.status(500).json({ msg: `Erro ${error}` })
+            if (error.message === `Id de inexistente`) {
+                return res.status(400).json({ mensagem: `Id ${id} inexistente` });
+            }
+            return res.status(500).json({ msg: `Erro ${error}` });
         }
     }
 }

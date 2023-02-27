@@ -18,10 +18,12 @@ class Services {
     }
 
     async modificarDataBasePorId(updateDados, where = {}) {
-        return await database[this.nomeModel].update(updateDados, where )
+        if (await database[this.nomeModel].update(updateDados, where)) {
+            return await this.solicitarDataBasePorId(where)
+        }
     }
 
-    async excluirDataBasePorId(where){
+    async excluirDataBasePorId(where) {
         return await database[this.nomeModel].destroy(where)
     }
 
