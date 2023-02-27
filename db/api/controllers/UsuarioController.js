@@ -1,5 +1,4 @@
-const dataBase = require('../models')
-const 
+const dataBase = require('../models') 
 
 class UsuarioController {
     /* Acessar todos os usuários */
