@@ -1,10 +1,12 @@
 const dataBase = require('../models') 
+const {UsuariosServices} = require('../services')
+const usuario = new UsuariosServices()
 
 class UsuarioController {
     /* Acessar todos os usuários */
     static async acessarUsuario(req, res) {
         try {
-            const usuarios = await dataBase.Usuario.findAll()
+            const usuarios = await usuario.solicitarDataBase()
             return res.status(200).json(usuarios)
         } catch (error) {
             return res.status(500).json({ msg: `erro ${error}` })
@@ -14,10 +16,16 @@ class UsuarioController {
     static async acessarUsuarioPorid(req, res) {
         const { id } = req.params
         try {
-            const usuarioId = await dataBase.Usuario.findOne({ where: { id: Number(id) } })
+            const usuarioId = await usuario.solicitarDataBasePorId({ where: { id: Number(id) } })
+            if (Object.keys(usuarioId).length === 0) {
+                throw new Error('Usuário inexistente')
+            }
             return res.status(201).json(usuarioId)
         } catch (error) {
-            return res.status(500).json({ msg: `Erro ${error}` })
+            if (error.message === 'Usuário inexistente') {
+                return res.status(400).json({ mensagem: `${error.message}`})
+            }
+            return res.status(500).json({ msg: `Erro ${error.message}` })
         }
     }
     /* Criar usuário novo */
