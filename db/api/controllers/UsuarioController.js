@@ -1,5 +1,5 @@
-const dataBase = require('../models')
 const { UsuariosServices } = require('../services')
+/* Instanciando novo objeto */
 const usuario = new UsuariosServices()
 
 class UsuarioController {
@@ -58,9 +58,10 @@ class UsuarioController {
                 throw new Error(`Campo de usuário vazio!`)
             } else if (!atualizaUsuario.nome || !atualizaUsuario.email || !atualizaUsuario.senha) {
                 throw new Error(`Campos obrigatorios vazio, preencha os campos`)
+            } else {
+                const usuarioAtualizado = await usuario.modificarDataBasePorId(atualizaUsuario, { where: { id: Number(id) } })
+                res.status(200).json(usuarioAtualizado)
             }
-            const usuarioAtualizado = await usuario.modificarDataBasePorId(atualizaUsuario, { where: { id: Number(id) } })
-            res.status(200).json(usuarioAtualizado)
         } catch (error) {
             if (error.message === `Campo de usuário vazio!`) {
                 return await res.status(400).json({ mensagem: `${error.message}` })
