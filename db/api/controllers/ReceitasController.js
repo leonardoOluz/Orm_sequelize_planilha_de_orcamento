@@ -38,9 +38,10 @@ class ReceitasControllers {
                 throw new Error(`Campo de receita vazio!`)
             } else if (!receitaNova.descricao || !receitaNova.valor || !receitaNova.data || !receitaNova.usuario_Id) {
                 throw new Error(`Preencha os campos obrigatório!`)
+            } else {
+                const novaReceita = await Receita.criarDataBase(receitaNova)
+                return res.status(201).json(novaReceita)
             }
-            const novaReceita = await Receita.criarDataBase(receitaNova)
-            return res.status(201).json(novaReceita)
         } catch (error) {
             if (error.message === 'Campo de receita vazio!') {
                 return res.status(400).json({ message: `Erro: ${error.message}` })
