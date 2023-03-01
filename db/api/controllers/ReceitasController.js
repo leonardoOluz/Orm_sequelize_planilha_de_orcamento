@@ -39,6 +39,7 @@ class ReceitasControllers {
             } else if (!receitaNova.descricao || !receitaNova.valor || !receitaNova.data || !receitaNova.usuario_Id) {
                 throw new Error(`Preencha os campos obrigatório!`)
             } else {
+
                 const novaReceita = await Receita.criarDataBase(receitaNova)
                 return res.status(201).json(novaReceita)
             }
@@ -55,22 +56,28 @@ class ReceitasControllers {
     /* Atualizar Receitas por Id */
     static async atualizarReceitaPorId(req, res) {
         const { id } = req.params;
-        const atualizarReceita = req.body;
+        const { descricao, valor, data, usuario_Id } = req.body;
         try {
 
-            if (Object.keys(atualizarReceita).length === 0) {
+            if (Object.keys(req.body).length === 0) {
                 throw new Error(`Campo de receita vazio!`)
-            } else if (!atualizarReceita.descricao || !atualizarReceita.valor || !atualizarReceita.data || !atualizarReceita.usuario_Id) {
+            } else if (!descricao || !valor || !data || !usuario_Id) {
                 throw new Error(`Preencha os campos obrigatório!`)
-            } else {
-                const receitaAtualizada = await Receita.modificarDataBasePorId(atualizarReceita, { where: { id: Number(id) } })
-                return res.status(201).json(receitaAtualizada)
+            } else {                
+                if (await Receita.checkReceitaDuplicada(descricao, id, data)) {
+                    const receitaAtualizada = await Receita.modificarDataBasePorId({ descricao, valor, data, usuario_Id }, { where: { id: Number(id) } })
+                    return res.status(201).json(receitaAtualizada)
+                } else {
+                    throw new Error(`receita duplicada`)
+                }
             }
 
         } catch (error) {
             if (error.message === `Campo de receita vazio!`) {
                 return await res.status(400).json({ mensagem: `${error.message}` })
             } else if (error.message === `Preencha os campos obrigatório!`) {
+                return await res.status(400).json({ mensagem: `${error.message}` })
+            } else if (error.message === 'receita duplicada') {
                 return await res.status(400).json({ mensagem: `${error.message}` })
             } else {
                 return await res.status(500).json({ mensagem: `${error}` })
