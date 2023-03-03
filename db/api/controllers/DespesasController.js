@@ -1,4 +1,3 @@
-const database = require('../models')
 const { DespesasServices } = require('../services')
 /* Instanciando nova despesas */
 const Despesas = new DespesasServices();
@@ -40,7 +39,7 @@ class DespesasControllers {
             } else if (!despesaNova.descricao || !despesaNova.valor || !despesaNova.data || !despesaNova.usuario_Id) {
                 throw new Error(`Preencha os campos obrigatório!`)
             } else {
-                const novaDespesa = await database.Despesas.create(despesaNova);
+                const novaDespesa = await Despesas.criarDataBase(despesaNova)
                 return res.status(201).json(novaDespesa)
             }
         } catch (error) {
