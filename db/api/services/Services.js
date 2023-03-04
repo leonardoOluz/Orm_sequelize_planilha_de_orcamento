@@ -8,7 +8,12 @@ class Services {
         return await database[this.nomeModel].findAll(where)
     }
     async solicitarDataBasePorId(where = {}) {
-        return await database[this.nomeModel].findAll(where)
+        const resposta = await database[this.nomeModel].findAll(where);
+        if (Object.keys(resposta).length === 0) {
+            throw new Error(`ID: ${this.nomeModel} inexistente`);
+        } else {
+            return resposta;
+        }
     }
     async criarDataBase(where = {}) {
         if (Object.values(where).length === 0) {

@@ -16,48 +16,20 @@ class DespesasControllers {
     static async acessarDespesaPorId(req, res) {
         const { id } = req.params
         try {
-            const despesaPorId = await Despesas.solicitarDataBasePorId({ where: { id: Number(id) } })
-            if (Object.keys(despesaPorId).length === 0) {
-                throw new Error('Não existe receitas com id informado!')
-            } else {
-                return res.status(200).json(despesaPorId)
-            }
+            const despesaPorId = await Despesas.solicitarDataBasePorId({ where: { id: Number(id) } });
+            return res.status(200).json(despesaPorId);
         } catch (error) {
-            if (error.message === 'Não existe receitas com id informado!') {
-                return res.status(400).json({ mensagem: `Não existe receitas para o id ${id} solicitado.` })
-            } else {
-                return res.status(500).json({ message: `Erro: ${error}` })
-            }
+            return res.status(500).json({ message: `${error}` });
         }
     }
     /* Criar Despesas */
-
-    // OBS: Criar verificação de data para não usar descrições repetidas:
     static async criarDespesa(req, res) {
         const despesaNova = req.body
-        /* Categorias para despesas */
-        let categorias = ['Alimentação', 'Saúde', 'Moradia', 'Transporte', 'Educação', 'Lazer', 'Imprevistos', 'Outras']
         try {
-            if (Object.keys(despesaNova).length === 0) {
-                throw new Error(`Campo de despesas vazio!`)
-            } else if (!despesaNova.descricao || !despesaNova.valor || !despesaNova.data || !despesaNova.usuario_Id) {
-                throw new Error(`Preencha os campos obrigatório!`)
-            } else if(!Despesas.verificarCategoriaESalvar(despesaNova)) {
-                throw new Error('Erro de categoria! Digite uma categoria válida!')
-            }else{
-                const novaDespesa = await Despesas.criarDataBase(despesaNova) 
-                return res.status(201).json(novaDespesa)
-            }
+            const novaDespesa = await Despesas.verificarCategoriaESalvar(despesaNova);
+            return res.status(201).json(novaDespesa);
         } catch (error) {
-            if (error.message === 'Campo de despesas vazio!!') {
-                return res.status(400).json({ message: `Erro: ${error.message}` })
-            } else if (error.message === `Preencha os campos obrigatório!`) {
-                return res.status(400).json({ message: `Erro: ${error.message}` })
-            } else if(error.message === 'Erro de categoria! Digite uma categoria válida!') {
-                return res.status(500).json({ message: `Erro: ${error}`, categorias})
-            }else{
-                return res.status(500).json({ message: `Erro: ${error}` })
-            }
+            return res.status(400).json({ message: `${error}` });
         }
     }
     /* Atualizar Despesas por Id */

@@ -17,15 +17,9 @@ class UsuarioController {
         const { id } = req.params
         try {
             const usuarioId = await usuario.solicitarDataBasePorId({ where: { id: Number(id) } })
-            if (Object.keys(usuarioId).length === 0) {
-                throw new Error('Usuário inexistente')
-            }
-            return res.status(201).json(usuarioId)
+            return res.status(201).json(usuarioId);
         } catch (error) {
-            if (error.message === 'Usuário inexistente') {
-                return res.status(400).json({ mensagem: `${error.message}` })
-            }
-            return res.status(500).json({ msg: `Erro ${error.message}` })
+            return res.status(400).json({ mensagem: `${error.message}` })
         }
     }
     /* Criar usuário novo */
@@ -54,7 +48,7 @@ class UsuarioController {
         const { id } = req.params;
         try {
             await usuario.excluirDataBasePorId({ where: { id: Number(id) } })
-            return res.status(201).json({mensagem: `Id: ${id} excluído com sucesso!`})
+            return res.status(201).json({ mensagem: `Id: ${id} excluído com sucesso!` })
         } catch (error) {
             return res.status(400).json({ msg: `Erro ${error}` });
         }
