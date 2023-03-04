@@ -4,9 +4,7 @@ class UsuarioServices extends Services {
     constructor() {
         super('Usuario')
     }
-    async trataErro(error) {
-       
-    }
+        
 
 }
 

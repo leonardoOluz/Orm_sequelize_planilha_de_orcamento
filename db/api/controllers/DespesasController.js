@@ -31,6 +31,8 @@ class DespesasControllers {
         }
     }
     /* Criar Despesas */
+
+    // OBS: Criar verificação de data para não usar descrições repetidas:
     static async criarDespesa(req, res) {
         const despesaNova = req.body
         /* Categorias para despesas */

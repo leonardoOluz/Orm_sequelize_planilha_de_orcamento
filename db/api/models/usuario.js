@@ -10,16 +10,56 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Usuario.hasMany(models.Receitas, {foreignKey: 'usuario_Id'})
-      Usuario.hasMany(models.Despesas, {foreignKey: 'usuario_Id'})
+      Usuario.hasMany(models.Receitas, { foreignKey: 'usuario_Id' })
+      Usuario.hasMany(models.Despesas, { foreignKey: 'usuario_Id' })
       // define association here
     }
   }
   Usuario.init({
-    nome: DataTypes.STRING,
-    email: DataTypes.STRING,
-    senha: DataTypes.STRING,
-    ativo: DataTypes.BOOLEAN
+    nome: {
+      type: DataTypes.STRING,
+      validate: {
+        funcaoValidadora: function (dado) {
+          if (dado.length < 3) {
+            throw new Error('o campo nome deve ter mais de 3 caracteres')
+          }
+        }
+      }
+    },
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: 'dado do tipo e-mail inválido'
+        }
+      }
+    },
+    senha: {
+      type: DataTypes.STRING(16),
+      validate: {
+        funcaoValidarSenha: function (dado) {
+          if (dado.length < 12) {
+            throw new Error(`Senha fraca, verifique a senha digitada!`)
+          }
+        }
+      }
+    },
+    ativo:
+    {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      validate: {
+        checkAtivo: function (ativo) {
+          console.log(ativo)
+          if (ativo === '') {
+            this.ativo = true
+          } else if (ativo === undefined) {
+            throw new Error('Campo ativo é necessário')
+          }
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Usuario',

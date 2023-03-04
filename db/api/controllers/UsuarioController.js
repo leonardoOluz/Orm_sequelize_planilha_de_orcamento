@@ -32,21 +32,10 @@ class UsuarioController {
     static async criarUsuario(req, res) {
         const usuarioNovo = req.body
         try {
-            if (Object.keys(usuarioNovo).length === 0) {
-                throw new Error(`Campo de usuário vazio!`)
-            } else if (!usuarioNovo.nome || !usuarioNovo.email || !usuarioNovo.senha) {
-                throw new Error(`Campos obrigatorios vazio, preencha os campos`)
-            }
-            const novoUsuario = await usuario.criarDataBase(usuarioNovo)
-            return res.status(201).json(novoUsuario)
+            const newUser = await usuario.criarDataBase(usuarioNovo)
+            return res.status(201).json(newUser)
         } catch (error) {
-            if (error.message === `Campo de usuário vazio!`) {
-                return await res.status(400).json({ mensagem: `${error.message}` })
-            } else if (error.message === `Campos obrigatorios vazio, preencha os campos`) {
-                return await res.status(400).json({ mensagem: `${error.message}` })
-            } else {
-                return await res.status(500).json({ mensagem: `${error}` })
-            }
+            return await res.status(500).json({ mensagem: `${error}` })
         }
     }
     /* Atualizar usuario */
@@ -54,39 +43,20 @@ class UsuarioController {
         const { id } = req.params
         const atualizaUsuario = req.body
         try {
-            if (Object.keys(atualizaUsuario).length === 0) {
-                throw new Error(`Campo de usuário vazio!`)
-            } else if (!atualizaUsuario.nome || !atualizaUsuario.email || !atualizaUsuario.senha) {
-                throw new Error(`Campos obrigatorios vazio, preencha os campos`)
-            } else {
-                const usuarioAtualizado = await usuario.modificarDataBasePorId(atualizaUsuario, { where: { id: Number(id) } })
-                res.status(200).json(usuarioAtualizado)
-            }
+            const usuarioAtualizado = await usuario.modificarDataBasePorId(atualizaUsuario, { where: { id: Number(id) } })
+            res.status(200).json(usuarioAtualizado)
         } catch (error) {
-            if (error.message === `Campo de usuário vazio!`) {
-                return await res.status(400).json({ mensagem: `${error.message}` })
-            } else if (error.message === `Campos obrigatorios vazio, preencha os campos`) {
-                return await res.status(400).json({ mensagem: `${error.message}` })
-            } else {
-                return await res.status(500).json({ mensagem: `${error}` })
-            }
+            return await res.status(500).json({ mensagem: `${error}` })
         }
     }
     /* Deletar usuário */
     static async deletarUsuario(req, res) {
         const { id } = req.params;
         try {
-            if (await usuario.excluirDataBasePorId({ where: { id: Number(id) } })) {
-                return res.status(201).json({ msg: `Usuario de id: ${id} deletado` });
-            } else {
-                throw new Error(`Id de inexistente`)
-            }
-
+            await usuario.excluirDataBasePorId({ where: { id: Number(id) } })
+            return res.status(201).json({mensagem: `Id: ${id} excluído com sucesso!`})
         } catch (error) {
-            if (error.message === `Id de inexistente`) {
-                return res.status(400).json({ mensagem: `Id ${id} inexistente` });
-            }
-            return res.status(500).json({ msg: `Erro ${error}` });
+            return res.status(400).json({ msg: `Erro ${error}` });
         }
     }
 }
