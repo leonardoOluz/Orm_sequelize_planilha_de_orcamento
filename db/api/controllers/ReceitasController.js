@@ -23,6 +23,17 @@ class ReceitasControllers {
             return res.status(500).json({ message: `${error}` });
         }
     }
+    /* Acessando Receitas por descrições */
+    static async buscarReceitasPorDescricao(req, res) {
+        const descricao = req.params.descricao
+        try {
+            console.log(descricao)
+            const receitasDescricaoDataBase = await Receita.solicitarDataBase({ where: { descricao: descricao } })
+            return res.status(201).json(receitasDescricaoDataBase)
+        } catch (error) {
+            return res.status(400).json({ mensagem: `${error}` })
+        }
+    }
     /* Criar Receitas */
     static async criarReceita(req, res) {
         const receitaNova = req.body
@@ -57,16 +68,6 @@ class ReceitasControllers {
         } catch (error) {
             return res.status(500).json({ message: `${error}` })
 
-        }
-    }
-    static async buscarReceitasPorDescricao(req, res){
-        const descricao = req.params.descricao
-        try {
-            console.log(descricao)
-            const receitasDescricaoDataBase = await Receita.solicitarDataBase({where: {descricao: descricao}})
-            return res.status(201).json(receitasDescricaoDataBase)
-        } catch (error) {
-            return res.status(400).json({mensagem: `${error}`})
         }
     }
 }

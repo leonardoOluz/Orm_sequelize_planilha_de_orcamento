@@ -5,6 +5,7 @@ class ReceitasServices extends Services {
         super('Receitas')
     }
 
+    /* Verificar receitas duplicadas pelas descrições */
     async checkReceitasDuplicada(receitasDescricao, receitasData) {
         const dbreceitassDescricao = await super.solicitarDataBase({ where: { descricao: receitasDescricao } })
         let resp = [];
@@ -22,6 +23,7 @@ class ReceitasServices extends Services {
             return false;
         }
     }
+    /* Verificar receitas duplicadas pelas descrições e checar Id */
     async checkReceitasDuplicadaPorId(descricao, data, id) {
         const dbreceitassDescricao = await super.solicitarDataBase({ where: { descricao: descricao } })
         const dbreceitasId = await super.solicitarDataBasePorId({ where: { id: Number(id) } })
@@ -45,6 +47,7 @@ class ReceitasServices extends Services {
             return false;
         }
     }
+    /* Atualizar receita por id checando dados */
     async atualizarReceitasporId(dados, id) {
         const { descricao, data } = dados;
         if (await this.checkReceitasDuplicadaPorId(descricao, data, id)) {
@@ -54,6 +57,7 @@ class ReceitasServices extends Services {
         }
 
     }
+    /* Criando receitas porém verificando se há dados repetidos */
     async criarReceitaNova(dados) {
         const { descricao, data } = dados;
         if (await this.checkReceitasDuplicada(descricao, data)) {

@@ -5,6 +5,7 @@ class DespesasServices extends Services {
         super('Despesas')
     }
 
+    /* Verificar despesas duplicadas por descrição e data */
     async checkDespesasDuplicada(DespesasDescricao, DespesasData) {
         const dbDespesassDescricao = await super.solicitarDataBase({ where: { descricao: DespesasDescricao } })
         let resp = [];        
@@ -22,6 +23,7 @@ class DespesasServices extends Services {
             return false;
         }
     }
+    /* Verificar despesas duplicadas por id data e descrição */
     async checkDespesasDuplicadaPorId(descricao, data, id) {
         const dbDespesassDescricao = await super.solicitarDataBase({ where: { descricao: descricao } })
         const dbDespesasId = await super.solicitarDataBasePorId({ where: { id: Number(id) } })
@@ -45,6 +47,7 @@ class DespesasServices extends Services {
             return false;
         }
     }
+    /* Verificar categoria de despesas para criar nova despesa */
     async verificarCategoriaESalvarNovaDespesas(despesas) {
         let categorias = ['Alimentação', 'Saúde', 'Moradia', 'Transporte', 'Educação', 'Lazer', 'Imprevistos', 'Outras', '']
         let verifique = false
@@ -68,6 +71,7 @@ class DespesasServices extends Services {
             throw new Error(`Existe uma data com a descrição: ${despesas.descricao} repetida! Data: ${despesas.data}. Verifique outra data!`)
         }
     }
+    /* Verificar categoria de despesas antes de atualizar */
     async verificarCategoriaEAtualizarDespesas(despesas, id) {
         let categorias = ['Alimentação', 'Saúde', 'Moradia', 'Transporte', 'Educação', 'Lazer', 'Imprevistos', 'Outras', '']
         let verifique = false

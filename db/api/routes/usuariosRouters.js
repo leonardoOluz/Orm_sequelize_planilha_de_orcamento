@@ -5,7 +5,7 @@ const router = Router();
 /* Caminho dos endPoints de Usuário */
 router
   .get('/usuarios', UsuarioController.acessarUsuario)
-  .get('/usuarios/:id', UsuarioController.acessarUsuarioPorid)
+  .get('/usuarios/id/:id', UsuarioController.acessarUsuarioPorid)
   .post('/usuarios', UsuarioController.criarUsuario)
   .put('/usuarios/:id', UsuarioController.atualizarInfoPoId)
   .delete('/usuarios/:id', UsuarioController.deletarUsuario)
