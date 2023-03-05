@@ -10,14 +10,42 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Receitas.belongsTo(models.Usuario, {foreignKey: 'usuario_Id'})
+      Receitas.belongsTo(models.Usuario, { foreignKey: 'usuario_Id' })
       // define association here
     }
   }
   Receitas.init({
-    descricao: DataTypes.STRING,
-    valor: DataTypes.FLOAT,
-    data: DataTypes.DATEONLY
+    descricao: {
+      type: DataTypes.STRING,
+      validate: {
+        validarDescricao: function (dado) {
+          if (dado === '') {
+            throw new Error('O campo descrição é obrigatório')
+          }
+        }
+      }
+
+    },
+    valor: {
+      type: DataTypes.FLOAT,
+      validate: {
+        validarDescricao: function (dado) {
+          if (dado === '') {
+            throw new Error('O campo valor é obrigatório')
+          }
+        }
+      }
+    },
+    data: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        validarDescricao: function (dado) {
+          if (dado === '') {
+            throw new Error('O campo data é obrigatório')
+          }
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Receitas',
