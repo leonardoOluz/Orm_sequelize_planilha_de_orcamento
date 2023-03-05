@@ -26,7 +26,7 @@ class DespesasControllers {
     static async criarDespesa(req, res) {
         const despesaNova = req.body
         try {
-            const novaDespesa = await Despesas.verificarCategoriaESalvar(despesaNova);
+            const novaDespesa = await Despesas.verificarCategoriaESalvarNovaDespesas(despesaNova);
             return res.status(201).json(novaDespesa);
         } catch (error) {
             return res.status(400).json({ message: `${error}` });
@@ -37,28 +37,11 @@ class DespesasControllers {
         const { id } = req.params;
         const atualizarDespesa = req.body;
         try {
-            if (Object.keys(atualizarDespesa).length === 0) {
-                throw new Error(`Campo de despesas vazio!`)
-            } else if (!atualizarDespesa.descricao || !atualizarDespesa.valor || !atualizarDespesa.data || !atualizarDespesa.usuario_Id) {
-                throw new Error(`Preencha os campos obrigatório!`)
-            } else {
-                const novaDespesa = await Despesas.modificarDataBasePorId(atualizarDespesa, { where: { id: Number(id) } })
-                if (Object.keys(novaDespesa).length === 0) {
-                    throw new Error('Não existe a despesa informada!')
-                } else {
-                    return res.status(201).json(novaDespesa)
-                }
-            }
+            const novaDespesa = await Despesas.verificarCategoriaEAtualizarDespesas(atualizarDespesa,id);
+            return res.status(201).json(novaDespesa);
+
         } catch (error) {
-            if (error.message === 'Campo de despesas vazio!!') {
-                return res.status(400).json({ message: `Erro: ${error.message}` })
-            } else if (error.message === `Preencha os campos obrigatório!`) {
-                return res.status(400).json({ message: `Erro: ${error.message}` })
-            } else if (error.message === 'Não existe a despesa informada!') {
-                return res.status(400).json({ message: `Erro: ${error.message}` })
-            } else {
-                return res.status(500).json({ message: `Erro: ${error}` })
-            }
+            return res.status(400).json({ message: `${error}` });
         }
     }
     /* Deletar Despesas por Id */
