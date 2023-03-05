@@ -37,7 +37,7 @@ class DespesasControllers {
         const { id } = req.params;
         const atualizarDespesa = req.body;
         try {
-            const novaDespesa = await Despesas.verificarCategoriaEAtualizarDespesas(atualizarDespesa,id);
+            const novaDespesa = await Despesas.verificarCategoriaEAtualizarDespesas(atualizarDespesa, id);
             return res.status(201).json(novaDespesa);
 
         } catch (error) {
@@ -48,17 +48,12 @@ class DespesasControllers {
     static async deletarDespesaPorId(req, res) {
         const { id } = req.params;
         try {
-            if (await Despesas.excluirDataBasePorId({ where: { id: Number(id) } })) {
-                return res.status(201).json({ message: `Despesa de id: ${id}, deletada com sucesso!` })
-            } else {
-                throw new Error(`Id inexistente!`)
-            }
+            await Despesas.excluirDataBasePorId({ where: { id: Number(id) } });
+            return res.status(201).json({ message: `Despesa de id: ${id}, deletada com sucesso!` });
+
         } catch (error) {
-            if (error.message === 'Id inexistente!') {
-                return res.status(400).json({ message: `${error}` })
-            } else {
-                return res.status(500).json({ message: `${error}` })
-            }
+            return res.status(400).json({ message: `${error}` });
+
         }
     }
 }
