@@ -5,7 +5,12 @@ class Services {
         this.nomeModel = nomeModel
     }
     async solicitarDataBase(where = {}) {
-        return await database[this.nomeModel].findAll(where)
+        const resposta = await database[this.nomeModel].findAll(where)
+        if (Object.keys(resposta).length === 0) {
+            throw new Error(`${this.nomeModel} inexistente`);
+        } else {
+            return resposta;
+        }
     }
     async solicitarDataBasePorId(where = {}) {
         const resposta = await database[this.nomeModel].findAll(where);
