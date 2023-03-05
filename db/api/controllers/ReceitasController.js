@@ -27,7 +27,6 @@ class ReceitasControllers {
     static async buscarReceitasPorDescricao(req, res) {
         const descricao = req.params.descricao
         try {
-            console.log(descricao)
             const receitasDescricaoDataBase = await Receita.solicitarDataBase({ where: { descricao: descricao } })
             return res.status(201).json(receitasDescricaoDataBase)
         } catch (error) {

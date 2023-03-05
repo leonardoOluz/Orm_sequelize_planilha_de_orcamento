@@ -22,6 +22,16 @@ class DespesasControllers {
             return res.status(500).json({ message: `${error}` });
         }
     }
+    /* Acessando Despesass por descrições */
+    static async buscarDespesasPorDescricao(req, res) {
+        const descricao = req.params.descricao
+        try {
+            const DespesasDescricaoDataBase = await Despesas.solicitarDataBase({ where: { descricao: descricao } })
+            return res.status(201).json(DespesasDescricaoDataBase)
+        } catch (error) {
+            return res.status(400).json({ mensagem: `${error}` })
+        }
+    }
     /* Criar Despesas */
     static async criarDespesa(req, res) {
         const despesaNova = req.body
