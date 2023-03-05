@@ -2,19 +2,19 @@
 
 ## A API tem por objetivo cadastrar receitas e despesas pessoais do seu orçamento domestico. podendo servir como controle orçamentario mensal e anual. Segue os endpoints:
 
-`Acesso aos endpoitns da API Usuários`
+`Acesso aos endpoints da API Usuários`
 * GET /usuarios -> Acessar todos os usuários.
 * POST /usuarios -> Criar usuário.
 * PUT /usuarios/:id -> Modificar usuário por ID.
 * DELETE / usuarios/:id -> Deletar usuário por ID.
 
-`Acesso aos endpoitns da API Receitas`
+`Acesso aos endpoints da API Receitas`
 * GET /receitas  -> Total de receitas.
 * POST /usuarios  -> Criar receita.
 * PUT /usuarios/:id -> Modificar receita por ID.
 * DELETE / ususarios/:id -> Deletar receita por ID.
 
-`Acesso aos endpoitns da API Despesas`
+`Acesso aos endpoints da API Despesas`
 * GET /receitas  -> Total de despesas
 * POST /usuarios  -> Criar despesas.
 * PUT /usuarios/:id -> Modificar despesas por ID.
