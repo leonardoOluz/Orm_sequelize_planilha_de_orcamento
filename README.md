@@ -104,7 +104,7 @@ Será necessário ajustar o endpoint de cadastro de despesas para receber essa n
 * Ao cadastrar uma depesa, a informação da categoria é **opcional**
 * Se a categoria da despesa não for informada, a API deve atribuir automaticamente a categoria **Outras** à despesa
 
-# Busca de receitas ⏳
+# Busca de receitas ✅
 
 A API deve possuir um endpoint para a busca de receitas pela **descrição**.
 
@@ -115,7 +115,7 @@ Exemplos de como o endpoint deve funcionar a partir dessa mudança:
 * GET **/receitas** -> deve devolver todas as receitas
 * GET **/receitas?descricao=xpto** -> deve devolver todas as receitas cuja descrição contenha a palavra indicada no parâmetro `descrição`
 
-# Busca de despesas ⏳
+# Busca de despesas ✅
 
 A API deve possuir um endpoint para a busca de despesas pela **descrição**.
 
