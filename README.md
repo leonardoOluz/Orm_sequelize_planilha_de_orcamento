@@ -84,7 +84,7 @@ Os testes das funcionalidades da API podem ser realizados em algum ferramenta de
 * Postman: https://www.postman.com
 * Insomnia: https://insomnia.rest
 
-# Categorização de despesas ⏳
+# Categorização de despesas ✅
 
 A partir de agora toda despesa deve possui uma **categoria**, devendo esta ser uma das seguintes opções:
 
@@ -99,7 +99,7 @@ A partir de agora toda despesa deve possui uma **categoria**, devendo esta ser u
 
 Será necessário ajustar o endpoint de cadastro de despesas para receber essa nova informação.
 
-## Regras de negócio ⏳
+## Regras de negócio ✅
 
 * Ao cadastrar uma depesa, a informação da categoria é **opcional**
 * Se a categoria da despesa não for informada, a API deve atribuir automaticamente a categoria **Outras** à despesa
