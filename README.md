@@ -10,15 +10,18 @@
 
 `Acesso aos endpoints da API Receitas`
 * GET /receitas  -> Total de receitas.
-* POST /usuarios  -> Criar receita.
-* PUT /usuarios/:id -> Modificar receita por ID.
-* DELETE / ususarios/:id -> Deletar receita por ID.
+* GET /receitas/{:ano}{:mes} -> Pesquisar Receitas por data.
+* GET /receitas/descricao/:descricao -> Pesquisar Receitas por Descrição.
+* POST /receitas  -> Criar receita.
+* PUT /receitas/:id -> Modificar receita por ID.
+* DELETE /receitas/:id -> Deletar receita por ID.
 
 `Acesso aos endpoints da API Despesas`
-* GET /receitas  -> Total de despesas
-* POST /usuarios  -> Criar despesas.
-* PUT /usuarios/:id -> Modificar despesas por ID.
-* DELETE / ususarios/:id -> Deletar despesas por ID.
+* GET /despesas -> Total de despesas
+* GET /despesas/descricao/:descricao -> Pesquisar Receitas por Descrição.
+* POST /despesas  -> Criar despesas.
+* PUT /despesas/:id -> Modificar despesas por ID.
+* DELETE /despesas/:id -> Deletar despesas por ID.
 
 ## Esta API foi desenvolvida em NodeJs, usando os frameworks: 
 
@@ -126,11 +129,17 @@ Exemplos de como o endpoint deve funcionar a partir dessa mudança:
 * GET **/despesas** -> deve devolver todas as despesas
 * GET **/despesas?descricao=xpto** -> deve devolver todas as despesas cuja descrição contenha a palavra indicada no parâmetro `descrição`
 
-# Listagem de receitas por mês ⏳
+# Listagem de receitas por mês ✅
 
 A API deve possuir um endpoint para a listagem de **todas** as receitas de determinado **mês**, sendo que ele deve aceitar requisições do tipo **GET** para a URI **/receitas/{ano}/{mes}**.
 
 Os dados das receitas(descrição, valor e data) devem ser devolvidos no corpo da resposta, no formato JSON.
+
+# Listagem de despesas por mês ⏳
+
+A API deve possuir um endpoint para a listagem de todas as despesas de determinado mês, sendo que ele deve aceitar requisições do tipo GET para a URI /despesas/{ano}/{mes}.
+
+Os dados das despesas(descrição, valor, data e categoria) devem ser devolvidos no corpo da resposta, no formato JSON.
 
 # Resumo do mês ⏳
 

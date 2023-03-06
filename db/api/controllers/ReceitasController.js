@@ -5,11 +5,17 @@ const Receita = new ReceitasServices();
 class ReceitasControllers {
     /* Acessar as Receitas */
     static async acessarReceitasDatabase(req, res) {
+        const { mes, ano } = req.query;
         try {
-            const receitasExistente = await Receita.solicitarDataBase()
-            return res.status(200).json(receitasExistente)
+            if (ano) {
+                const receitasDatas = await Receita.listarReceitasPorAnoMes({ano, mes});
+                res.status(201).json(receitasDatas);
+            } else {
+                const receitasExistente = await Receita.solicitarDataBase()
+                return res.status(200).json(receitasExistente)
+            }
         } catch (error) {
-            return res.status(500).json({ messagem: `Erro ${error}` })
+            return res.status(500).json({ messagem: `${error}` })
         }
     }
     /* Acessar as Receitas por Id */

@@ -4,6 +4,7 @@ const router = Router();
 
 router
    .get('/receitas', ReceitasControllers.acessarReceitasDatabase)
+   .get('/receitas/{:ano}{:mes}', ReceitasControllers.acessarReceitasDatabase)
    .get('/receitas/id/:id', ReceitasControllers.acessarReceitaPorId)
    .get('/receitas/descricao/:descricao', ReceitasControllers.buscarReceitasPorDescricao)
    .post('/receitas', ReceitasControllers.criarReceita)
