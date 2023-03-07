@@ -8,15 +8,15 @@ class DespesasServices extends Services {
     /* Verificar despesas duplicadas por descrição e data */
     async checkDespesasDuplicada(DespesasDescricao, DespesasData) {
         const dbDespesassDescricao = await super.solicitarDataBase({ where: { descricao: DespesasDescricao } })
-        let resp = [];        
-            dbDespesassDescricao.forEach((obj) => {
-                let outrasDatas = Number(obj.dataValues.data.slice(5, 7));
-                let dataAtualizada = Number(DespesasData.slice(5, 7));
-                if (outrasDatas === dataAtualizada) {
-                    resp.push(outrasDatas);
-                }
-            })       
-        
+        let resp = [];
+        dbDespesassDescricao.forEach((obj) => {
+            let outrasDatas = Number(obj.dataValues.data.slice(5, 7));
+            let dataAtualizada = Number(DespesasData.slice(5, 7));
+            if (outrasDatas === dataAtualizada) {
+                resp.push(outrasDatas);
+            }
+        })
+
         if (Object.keys(resp).length === 0) {
             return true;
         } else {
@@ -28,19 +28,19 @@ class DespesasServices extends Services {
         const dbDespesassDescricao = await super.solicitarDataBase({ where: { descricao: descricao } })
         const dbDespesasId = await super.solicitarDataBasePorId({ where: { id: Number(id) } })
         let resp = [];
-            
-            dbDespesassDescricao.forEach((obj) => {
-                if (Number(obj.dataValues.id) !== Number(id)) {
-                    if (dbDespesasId[0].dataValues.descricao === obj.dataValues.descricao) {
-                        let outrasDatas = Number(obj.dataValues.data.slice(5, 7));
-                        let dataAtualizada = Number(data.slice(5, 7));
-                        if (outrasDatas === dataAtualizada) {
-                            resp.push(outrasDatas);
-                        }
+
+        dbDespesassDescricao.forEach((obj) => {
+            if (Number(obj.dataValues.id) !== Number(id)) {
+                if (dbDespesasId[0].dataValues.descricao === obj.dataValues.descricao) {
+                    let outrasDatas = Number(obj.dataValues.data.slice(5, 7));
+                    let dataAtualizada = Number(data.slice(5, 7));
+                    if (outrasDatas === dataAtualizada) {
+                        resp.push(outrasDatas);
                     }
                 }
-            });
-        
+            }
+        });
+
         if (Object.keys(resp).length === 0) {
             return true;
         } else {
@@ -87,12 +87,66 @@ class DespesasServices extends Services {
         })
         if (await this.checkDespesasDuplicadaPorId(despesas.descricao, despesas.data, id)) {
             if (verifique) {
-                return await super.modificarDataBasePorId(despesas,{where: {id: Number(id)}})
+                return await super.modificarDataBasePorId(despesas, { where: { id: Number(id) } })
             } else {
                 throw new Error(`Categoria inválida! Verifique as categorias aceitas:${categorias}`)
             }
         } else {
             throw new Error(`Existe uma data com a descrição: ${despesas.descricao} repetida! Data: ${despesas.data}. Verifique outra data!`)
+        }
+    }
+    /* Listar despesas por Datas  */
+    async verificarDatasDespesas({ ano, mes }) {
+        const despesas = await super.solicitarDataBase();
+        if ((ano !== undefined) && (mes !== undefined)) {
+            return this.listarDespesasPorAnoMes(despesas, { ano, mes });
+        } else if (ano) {
+            return this.listarDespesasPorAno(despesas, ano);
+        } else if (mes) {
+            return this.listarDespesasPorMes(despesas, mes);
+        }
+    }
+    /* Listar despesas por mês */
+    async listarDespesasPorMes(despesas, mes) {
+
+        let checkDataMes = []
+        despesas.map(obj => {
+            if (obj.dataValues.data.slice(5, 7) === mes) {
+                checkDataMes.push(obj.dataValues);
+            }
+        })
+        if (Object.values(checkDataMes).length === 0) {
+            throw new Error(`Não há despesas com a data informada!`);
+        } else {
+            return checkDataMes;
+        }
+    }
+    /* Listar despesas por ano */
+    async listarDespesasPorAno(despesas, ano) {
+        let checkDataAno = [];
+        despesas.map(obj => {
+            if (obj.dataValues.data.slice(0, 4) === ano) {
+                checkDataAno.push(obj.dataValues);
+            }
+        })
+        if (Object.values(checkDataAno).length === 0) {
+            throw new Error(`Não há despesas com a data informada!`);
+        } else {
+            return checkDataAno;
+        }
+    }
+    /* listar despesas por ano e mês */
+    async listarDespesasPorAnoMes(despesas, { ano, mes }) {
+        let checkDataMesAno = [];
+        despesas.map(obj => {
+            if ((obj.dataValues.data.slice(0, 4) === ano) && (obj.dataValues.data.slice(5, 7) === mes)) {
+                checkDataMesAno.push(obj.dataValues);
+            }
+        })
+        if (Object.values(checkDataMesAno).length === 0) {
+            throw new Error(`Não há despesas com a data informada!`);
+        } else {
+            return checkDataMesAno;
         }
     }
 }

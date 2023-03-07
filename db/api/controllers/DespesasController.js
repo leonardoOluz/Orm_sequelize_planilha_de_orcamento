@@ -5,11 +5,18 @@ const Despesas = new DespesasServices();
 class DespesasControllers {
     /* Acessando Despesas  */
     static async acessarDespesasDatabase(req, res) {
+        const { mes, ano } = req.query;
         try {
-            const despesasExistente = await Despesas.solicitarDataBase()
-            return res.status(200).json(despesasExistente)
+            if (ano || mes) {
+                console.log(`Controller = Ano e Mes`)
+                const despesasDatas = await Despesas.verificarDatasDespesas({ano, mes});
+                res.status(201).json(despesasDatas);                
+            } else {
+                const despesasExistente = await Despesas.solicitarDataBase();
+                return res.status(200).json(despesasExistente);    
+            }
         } catch (error) {
-            return res.status(500).json({ messagem: `Erro ${error}` })
+            return res.status(500).json({ messagem: `${error}` })
         }
     }
     /* Acessar Despesas por Id */

@@ -7,8 +7,9 @@ class ReceitasControllers {
     static async acessarReceitasDatabase(req, res) {
         const { mes, ano } = req.query;
         try {
-            if (ano) {
-                const receitasDatas = await Receita.listarReceitasPorAnoMes({ano, mes});
+            if (ano || mes) {
+                console.log(`Controller = Ano e Mes`)
+                const receitasDatas = await Receita.verificarDatasReceitas({ano, mes});
                 res.status(201).json(receitasDatas);
             } else {
                 const receitasExistente = await Receita.solicitarDataBase()
