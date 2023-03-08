@@ -1,5 +1,6 @@
-const { ReceitasServices } = require('../services')
+const { ReceitasServices, DespesasServices } = require('../services')
 /* Instanciando novo Objeto */
+const Despesas = new DespesasServices();
 const Receita = new ReceitasServices();
 
 class ReceitasControllers {
@@ -80,7 +81,10 @@ class ReceitasControllers {
     static async resumoDespesasReceitasPorData(req, res) {
         const { mes, ano } = req.params;
         try {
-            res.status(200).json({ ano, mes })
+            const receitasData = await Receita.verificarDatasReceitas({ano, mes});
+            const despesasData = await Despesas.verificarDatasDespesas({ano, mes});
+            const resultado = await Receita.resumoReceitasDespesas(receitasData, despesasData);
+            res.status(200).json(resultado)
         } catch (error) {
             res.status(500).json({ message: `${error}` })
         }

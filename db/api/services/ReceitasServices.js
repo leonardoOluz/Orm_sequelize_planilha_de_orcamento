@@ -31,9 +31,9 @@ class ReceitasServices extends Services {
                 if (dbreceitasId[0].dataValues.descricao === obj.dataValues.descricao) {
                     if (obj.dataValues.data.slice(0, 7) === data.slice(0, 7)) {
                         resp.push(obj.dataValues.data);
-                    }                    
-                }                
-            }           
+                    }
+                }
+            }
         })
 
         if (Object.keys(resp).length === 0) {
@@ -113,6 +113,41 @@ class ReceitasServices extends Services {
         } else {
             return checkDataMesAno;
         }
+    }
+    /* Resumo de despesas por mês */
+    async resumoReceitasDespesas(receitasData, despesasData) {
+        let categorias = ['Alimentação', 'Saúde', 'Moradia', 'Transporte', 'Educação', 'Lazer', 'Imprevistos', 'Outras'];
+        let totReceitas = 0, totDespesas = 0;
+        let letCat;
+        let letSoma = 0;
+        let filtrarCategoria = [];
+
+        receitasData.map(obj => {
+            totReceitas += Number(obj.valor)
+        });
+        despesasData.map(obj => {
+            totDespesas += Number(obj.valor)
+        });
+        const resumo = {
+            data: receitasData[0].data.slice(0, 7),
+            valorReceitas: Math.round(totReceitas, -1),
+            valorDespesas: Math.round(totDespesas, -1),
+            saldoFinal: Math.round((totReceitas - totDespesas), -1),
+            categorias: []
+        };
+        categorias.map(objDeCategorias => {
+            filtrarCategoria = despesasData.filter(obj => obj.categoria.includes(objDeCategorias))
+            if (Object.values(filtrarCategoria).length !== 0) {
+                filtrarCategoria.map(obj => {
+                    letCat = obj.categoria;
+                    letSoma += obj.valor;
+                })
+                resumo.categorias.push({ categoria: letCat, valor: letSoma })
+                letCat = '';
+                letSoma = 0;
+            }
+        });
+        return resumo
     }
 }
 
