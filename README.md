@@ -18,7 +18,8 @@
 
 `Acesso aos endpoints da API Despesas`
 * GET /despesas -> Total de despesas
-* GET /despesas/descricao/:descricao -> Pesquisar Receitas por Descrição.
+* GET /receitas/{:ano}{:mes} -> Pesquisar despesas por data.
+* GET /despesas/descricao/:descricao -> Pesquisar despesas por Descrição.
 * POST /despesas  -> Criar despesas.
 * PUT /despesas/:id -> Modificar despesas por ID.
 * DELETE /despesas/:id -> Deletar despesas por ID.

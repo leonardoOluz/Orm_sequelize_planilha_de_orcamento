@@ -4,9 +4,12 @@ const router = Router();
 
 router
    .get('/receitas', ReceitasControllers.acessarReceitasDatabase)
-   .get('/receitas/{:ano}{:mes}', ReceitasControllers.acessarReceitasDatabase)
+   .get('/receitas?descricao=xpto', ReceitasControllers.acessarReceitasDatabase)   
+   .get('/receitas/ano/:ano/mes/:mes', ReceitasControllers.buscarReceitasPorData)
    .get('/receitas/id/:id', ReceitasControllers.acessarReceitaPorId)
-   .get('/receitas/descricao/:descricao', ReceitasControllers.buscarReceitasPorDescricao)
+   
+   .get('/resumo/{:ano}{:mes}', ReceitasControllers.resumoDespesasReceitasPorData)
+   
    .post('/receitas', ReceitasControllers.criarReceita)
    .put('/receitas/:id', ReceitasControllers.atualizarReceitaPorId)
    .delete('/receitas/:id', ReceitasControllers.deletarReceitaPorId)

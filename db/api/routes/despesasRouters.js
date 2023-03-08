@@ -4,9 +4,9 @@ const router = Router();
 
 router
    .get('/despesas', DespesasControllers.acessarDespesasDatabase)
-   .get('/receitas/{:ano}{:mes}', DespesasControllers.acessarDespesasDatabase)
+   .get('/despesas?descricao=xpto', DespesasControllers.acessarDespesasDatabase)
+   .get('/despesas/ano/:ano/mes/:mes', DespesasControllers.buscarDespesasPorData) 
    .get('/despesas/id/:id', DespesasControllers.acessarDespesaPorId)
-   .get('/despesas/descricao/:descricao', DespesasControllers.buscarDespesasPorDescricao)
    .post('/despesas', DespesasControllers.criarDespesa)
    .put('/despesas/:id', DespesasControllers.atualizarDespesaPorId)
    .delete('/despesas/:id', DespesasControllers.deletarDespesaPorId)

@@ -3,14 +3,13 @@ const { ReceitasServices } = require('../services')
 const Receita = new ReceitasServices();
 
 class ReceitasControllers {
-    /* Acessar as Receitas */
+    /* Acessar todas Receitas ou por descrição */
     static async acessarReceitasDatabase(req, res) {
-        const { mes, ano } = req.query;
+        const { descricao } = req.query;
         try {
-            if (ano || mes) {
-                console.log(`Controller = Ano e Mes`)
-                const receitasDatas = await Receita.verificarDatasReceitas({ano, mes});
-                res.status(201).json(receitasDatas);
+            if (descricao) {
+                const receitasDescricaoDataBase = await Receita.solicitarDataBase({ where: { descricao: descricao } })
+                return res.status(201).json(receitasDescricaoDataBase)
             } else {
                 const receitasExistente = await Receita.solicitarDataBase()
                 return res.status(200).json(receitasExistente)
@@ -30,12 +29,13 @@ class ReceitasControllers {
             return res.status(500).json({ message: `${error}` });
         }
     }
-    /* Acessando Receitas por descrições */
-    static async buscarReceitasPorDescricao(req, res) {
-        const descricao = req.params.descricao
+    /* Acessando Receitas por data */
+    static async buscarReceitasPorData(req, res) {
+        const {ano, mes} = req.params        
         try {
-            const receitasDescricaoDataBase = await Receita.solicitarDataBase({ where: { descricao: descricao } })
-            return res.status(201).json(receitasDescricaoDataBase)
+            const receitasDatas = await Receita.verificarDatasReceitas({ ano, mes });
+            res.status(201).json(receitasDatas);
+
         } catch (error) {
             return res.status(400).json({ mensagem: `${error}` })
         }
@@ -75,6 +75,15 @@ class ReceitasControllers {
             return res.status(500).json({ message: `${error}` })
 
         }
+    }
+    static async resumoDespesasReceitasPorData(req, res) {
+        const { mes, ano } = req.query;
+        try {
+            res.status(200).json({ ano, mes })
+        } catch (error) {
+            res.status(500).json({ message: `${error}` })
+        }
+
     }
 }
 

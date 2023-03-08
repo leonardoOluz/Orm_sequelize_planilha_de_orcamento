@@ -5,15 +5,14 @@ const Despesas = new DespesasServices();
 class DespesasControllers {
     /* Acessando Despesas  */
     static async acessarDespesasDatabase(req, res) {
-        const { mes, ano } = req.query;
+        const { descricao } = req.query;
         try {
-            if (ano || mes) {
-                console.log(`Controller = Ano e Mes`)
-                const despesasDatas = await Despesas.verificarDatasDespesas({ano, mes});
-                res.status(201).json(despesasDatas);                
+            if (descricao) {
+                const DespesasDescricaoDataBase = await Despesas.solicitarDataBase({ where: { descricao: descricao } })
+                return res.status(201).json(DespesasDescricaoDataBase)
             } else {
                 const despesasExistente = await Despesas.solicitarDataBase();
-                return res.status(200).json(despesasExistente);    
+                return res.status(200).json(despesasExistente);
             }
         } catch (error) {
             return res.status(500).json({ messagem: `${error}` })
@@ -30,11 +29,11 @@ class DespesasControllers {
         }
     }
     /* Acessando Despesass por descrições */
-    static async buscarDespesasPorDescricao(req, res) {
-        const descricao = req.params.descricao
+    static async buscarDespesasPorData(req, res) {
+        const { ano, mes } = req.params
         try {
-            const DespesasDescricaoDataBase = await Despesas.solicitarDataBase({ where: { descricao: descricao } })
-            return res.status(201).json(DespesasDescricaoDataBase)
+            const despesasDatas = await Despesas.verificarDatasDespesas({ ano, mes });
+            res.status(201).json(despesasDatas);
         } catch (error) {
             return res.status(400).json({ mensagem: `${error}` })
         }
