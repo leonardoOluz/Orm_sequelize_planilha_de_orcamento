@@ -35,7 +35,11 @@ class ReceitasControllers {
         const {ano, mes} = req.params        
         try {
             const receitasDatas = await Receita.verificarDatasReceitas({ ano, mes });
-            res.status(201).json(receitasDatas);
+            if (receitasDatas) {
+                res.status(201).json(receitasDatas);    
+            } else {
+                throw new Error(`Não há receitas com a data informada!`);
+            }     
 
         } catch (error) {
             return res.status(400).json({ mensagem: `${error}` })
@@ -83,8 +87,13 @@ class ReceitasControllers {
         try {
             const receitasData = await Receita.verificarDatasReceitas({ano, mes});
             const despesasData = await Despesas.verificarDatasDespesas({ano, mes});
-            const resultado = await Receita.resumoReceitasDespesas(receitasData, despesasData);
-            res.status(200).json(resultado)
+            const resultado = await Receita.resumoReceitasDespesas(receitasData, despesasData,{mes, ano});
+            if (resultado.valorReceitas === 0 && resultado.valorDespesas === 0) {
+                throw new Error(`Não há dados para resumo!`)
+            } else {
+                res.status(200).json(resultado)    
+            }
+            
         } catch (error) {
             res.status(500).json({ message: `${error}` })
         }

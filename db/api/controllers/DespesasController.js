@@ -33,7 +33,12 @@ class DespesasControllers {
         const { ano, mes } = req.params
         try {
             const despesasDatas = await Despesas.verificarDatasDespesas({ ano, mes });
-            res.status(201).json(despesasDatas);
+            if (despesasDatas) {
+                res.status(201).json(despesasDatas);    
+            } else {
+                throw new Error(`Não há despesas com a data informada!`);
+            }
+            
         } catch (error) {
             return res.status(400).json({ mensagem: `${error}` })
         }

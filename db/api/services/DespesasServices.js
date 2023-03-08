@@ -10,10 +10,8 @@ class DespesasServices extends Services {
         const dbDespesassDescricao = await super.solicitarDataBase({ where: { descricao: DespesasDescricao } })
         let resp = [];
         dbDespesassDescricao.forEach((obj) => {
-            let outrasDatas = Number(obj.dataValues.data.slice(5, 7));
-            let dataAtualizada = Number(DespesasData.slice(5, 7));
-            if (outrasDatas === dataAtualizada) {
-                resp.push(outrasDatas);
+            if (obj.dataValues.data.slice(0, 7) === DespesasData.slice(0, 7)) {
+                resp.push(obj.dataValues.data);
             }
         })
 
@@ -116,7 +114,7 @@ class DespesasServices extends Services {
             }
         })
         if (Object.values(checkDataMes).length === 0) {
-            throw new Error(`Não há despesas com a data informada!`);
+           return false;
         } else {
             return checkDataMes;
         }
@@ -130,7 +128,7 @@ class DespesasServices extends Services {
             }
         })
         if (Object.values(checkDataAno).length === 0) {
-            throw new Error(`Não há despesas com a data informada!`);
+           return false ;
         } else {
             return checkDataAno;
         }
@@ -144,7 +142,7 @@ class DespesasServices extends Services {
             }
         })
         if (Object.values(checkDataMesAno).length === 0) {
-            throw new Error(`Não há despesas com a data informada!`);
+           return false;
         } else {
             return checkDataMesAno;
         }
