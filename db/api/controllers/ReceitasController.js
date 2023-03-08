@@ -76,8 +76,9 @@ class ReceitasControllers {
 
         }
     }
+    /* Resumo de receitas e despesas por data */
     static async resumoDespesasReceitasPorData(req, res) {
-        const { mes, ano } = req.query;
+        const { mes, ano } = req.params;
         try {
             res.status(200).json({ ano, mes })
         } catch (error) {
