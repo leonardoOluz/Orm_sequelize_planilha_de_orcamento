@@ -5,11 +5,10 @@ const usuario = new UsuariosServices()
 class UsuarioController {
     /* Acessar todos os usuários */
     static async acessarUsuario(req, res) {
-        const {email, senha} = req.body
-        
+        const {email, senha} = req.body        
         try {
-            const usuarios = await usuario.acessarUsuarioPorSalHash(email, senha)          
-            return res.status(200).json(usuarios)
+            const infoToken = await usuario.acessarUsuarioPorSalHash(email, senha)          
+            return res.status(200).json({ msg: `Autenticação realizada com sucesso`, infoToken })
         } catch (error) {
             return res.status(500).json({ msg: `${error}` })
         }
