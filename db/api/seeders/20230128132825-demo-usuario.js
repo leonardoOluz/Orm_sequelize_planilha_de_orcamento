@@ -8,7 +8,7 @@ module.exports = {
       {
         nome: 'Lucca Luz',
         email: "lucca@email",
-        senha: "LuccaTestando",
+        sal: "LuccaTestando",
         ativo: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -16,7 +16,7 @@ module.exports = {
       {
         nome: 'Ana Lima',
         email: "ana@email",
-        senha: "AnaTestando",
+        sal: "LuccaTestando",
         ativo: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -24,7 +24,7 @@ module.exports = {
       {
         nome: 'Vania Amorim',
         email: "vania@email",
-        senha: "VaniaTestando",
+        sal: "LuccaTestando",
         ativo: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -32,7 +32,7 @@ module.exports = {
       {
         nome: 'Rosangela Alves',
         email: "rosangela@email",
-        senha: "RosangelaTestando",
+        sal: "LuccaTestando",
         ativo: 1,
         createdAt: new Date(),
         updatedAt: new Date()

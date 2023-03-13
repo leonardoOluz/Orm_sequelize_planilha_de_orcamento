@@ -23,11 +23,11 @@ class Services {
         }
     }
     /* Criar novo dado em database */
-    async criarDataBase(where = {}) {
-        if (Object.values(where).length === 0) {
+    async criarDataBase(dados = {}) {
+        if (Object.values(dados).length === 0) {
             throw new Error(`Não há dados para salvar`)
         } else {
-            return await database[this.nomeModel].create(where)
+            return await database[this.nomeModel].create(dados)
         }
     }
     /* Modificar dados por id  */

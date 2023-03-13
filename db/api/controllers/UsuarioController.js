@@ -5,11 +5,13 @@ const usuario = new UsuariosServices()
 class UsuarioController {
     /* Acessar todos os usuários */
     static async acessarUsuario(req, res) {
+        const {email, senha} = req.body
+        
         try {
-            const usuarios = await usuario.solicitarDataBase()
+            const usuarios = await usuario.acessarUsuarioPorSalHash(email, senha)          
             return res.status(200).json(usuarios)
         } catch (error) {
-            return res.status(500).json({ msg: `erro ${error}` })
+            return res.status(500).json({ msg: `${error}` })
         }
     }
     /* Acessar um usuario */
@@ -25,8 +27,10 @@ class UsuarioController {
     /* Criar usuário novo */
     static async criarUsuario(req, res) {
         const usuarioNovo = req.body
+        
         try {
-            const newUser = await usuario.criarDataBase(usuarioNovo)
+            console.log(usuarioNovo)
+            const newUser = await usuario.salvarNovoUsuarioComSalHash(usuarioNovo)
             return res.status(201).json(newUser)
         } catch (error) {
             return await res.status(500).json({ mensagem: `${error}` })

@@ -36,14 +36,12 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     senha: {
-      type: DataTypes.STRING(16),
-      validate: {
-        funcaoValidarSenha: function (dado) {
-          if (dado.length < 12) {
-            throw new Error(`Senha fraca, verifique a senha digitada!`)
-          }
-        }
-      }
+      type: DataTypes.STRING(200),
+      allowNull: false
+    },
+    sal: {
+      type: DataTypes.STRING(200),
+      allowNull: false
     },
     ativo:
     {
