@@ -8,8 +8,9 @@ function criarToken(dados) {
     return dadosToken;
 }
 function verificarToken(dados){
-    
+    const tokenDescriptografado = jwt.verify(dados, secret)
+    return tokenDescriptografado;
 }
 
 
-module.exports = criarToken;
+module.exports = {criarToken, verificarToken} 

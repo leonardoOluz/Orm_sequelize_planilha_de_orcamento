@@ -30,6 +30,15 @@ class Services {
             return await database[this.nomeModel].create(dados)
         }
     }
+    /* Criar novo dado em database pesquisando dados existente */
+    async criarDataBaseChecandoDados(dados) {
+        if (Object.values(dados).length === 0) {
+            throw new Error(`Não há dados para salvar`)
+        } else {
+            const [user, created] = await database[this.nomeModel].findOrCreate(dados)
+            return { user, created }
+        }
+    }
     /* Modificar dados por id  */
     async modificarDataBasePorId(updateDados, where = {}) {
         if (Object.values(updateDados).length === 0) {
