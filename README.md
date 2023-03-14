@@ -3,10 +3,11 @@
 ## A API tem por objetivo cadastrar receitas e despesas pessoais do seu orçamento domestico. podendo servir como controle orçamentario mensal e anual. Segue os endpoints:
 
 `Acesso aos endpoints da API Usuários`
-* GET /usuarios -> Acessar todos os usuários.
+* GET /usuarios -> Acessar todos os usuários por token
 * POST /usuarios -> Criar usuário.
-* PUT /usuarios/:id -> Modificar usuário por ID.
-* DELETE / usuarios/:id -> Deletar usuário por ID.
+* POST / usuario/login -> Logar usuário
+* PUT /usuarios/:id -> Modificar usuário por ID por token
+* DELETE / usuarios/:id -> Deletar usuário por ID por token
 
 `Acesso aos endpoints da API Receitas`
 * GET /receitas  -> Total de receitas.
@@ -136,13 +137,13 @@ A API deve possuir um endpoint para a listagem de **todas** as receitas de deter
 
 Os dados das receitas(descrição, valor e data) devem ser devolvidos no corpo da resposta, no formato JSON.
 
-# Listagem de despesas por mês ⏳
+# Listagem de despesas por mês ✅
 
 A API deve possuir um endpoint para a listagem de todas as despesas de determinado mês, sendo que ele deve aceitar requisições do tipo GET para a URI /despesas/{ano}/{mes}.
 
 Os dados das despesas(descrição, valor, data e categoria) devem ser devolvidos no corpo da resposta, no formato JSON.
 
-# Resumo do mês ⏳
+# Resumo do mês ✅
 
 A API deve possuir um endpoint para detalhar o resumo de determinado **mês**, sendo que ele deve aceitar requisições do tipo **GET** para a URI **/resumo/{ano}/{mes}**.
 
@@ -161,11 +162,11 @@ O resumo do mês deve conter as seguintes informações:
 
 Implemente testes automatizados dos endpoints da API, para garantir que as regras de negócio e informações devolvidas por ela estejam funcionando conforme o esperado.
 
-# Banco de dados ⏳
+# Banco de dados ✅
 
 Para implementar o mecanismo de autenticação na API, você vai precisar alterar a estrutura do banco de dados dela, incluindo nele uma nova tabela para armazenar os dados de autenticação dos usuários.
 
-# Autenticação ⏳
+# Autenticação ✅
 
 A partir de agora somente usuários autenticados podem interagir com a API.
 
