@@ -6,7 +6,7 @@ class UsuarioServices extends Services {
     constructor() {
         super('Usuario')
     }
-
+    /* Salvar novo usuario com hashsenha e sal */
     async salvarNovoUsuarioComSalHash(dados) {
         const [sal, senhaHash] = criarSenhaSalHash(dados.senha).split(':')
         dados.senha = senhaHash;
@@ -27,6 +27,7 @@ class UsuarioServices extends Services {
             throw new Error(`Email existente!`);
         }
     }
+    /* Acessa usuário por Id */
     async acessarUsuarioPorSalHash(email, senha) {
         const usuarioChecar = await super.solicitarDataBase({ where: { email: email } })
         if (usuarioChecar[0].ativo) {
@@ -39,6 +40,7 @@ class UsuarioServices extends Services {
             throw new Error(`Usuário não autorizado!`);
         }
     }
+    /* Verificar token valido */
     async checkTokenUsuarioAcesso(dadosToken) {
         const verificadoUsuario = verificarToken(dadosToken);
         const usuarioExistente = await super.solicitarDataBase({ where: { email: verificadoUsuario.email } });
@@ -48,6 +50,7 @@ class UsuarioServices extends Services {
             throw new Error(`Usuário não autorizado!`);
         }
     }
+    /* Atualizar usuário checar hash e sal */
     async atualizarUsuarioChekarHashSal(dadosAtualizar, id) {
         const usuarioPorId = await super.solicitarDataBasePorId({ where: { id: id } });
         if (usuarioPorId[0].dataValues.sal === null) {
