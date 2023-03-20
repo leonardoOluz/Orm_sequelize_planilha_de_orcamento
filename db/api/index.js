@@ -11,3 +11,5 @@ routes(app)
 app.listen(port, () => {
     console.log(`Servidor escutando em http://localhost:${port}`)
 })
+
+module.exports = app;
