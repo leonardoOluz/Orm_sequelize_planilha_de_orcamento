@@ -22,7 +22,7 @@ class UsuarioServices extends Services {
             }
         })
         if (created) {
-            return { nome: user.nome, email: user.email }
+            return {id: user.id, nome: user.nome, email: user.email }
         } else {
             throw new Error(`Email existente!`);
         }
