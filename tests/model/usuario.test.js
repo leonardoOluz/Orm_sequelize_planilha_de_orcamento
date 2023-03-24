@@ -20,7 +20,23 @@ describe('Criar novo usuario', () => {
         }));
         usuarioId = novoUsuario.id
     })
-    it('Deve excluir autor no BD', async () => {
+    it('Dever acessar usuario por ID', async () => {
+        const resposta = await databaseUsuario.solicitarDataBasePorId({ where: { id: usuarioId } });
+        expect(resposta[0].dataValues.nome).toEqual(usuario.nome);
+    })
+    it('Deve solicitar usuario por email', async () => {
+        const resposta = await databaseUsuario.solicitarDataBase({ where: { email: usuario.email } });
+        expect(resposta[0].dataValues.email).toEqual(usuario.email);
+    })
+    it('Deve atualizar usuario checando sal e hash',async () => {
+        const updateUsuario = {
+            nome: 'Usuario Jest',
+            senha: 'teste102030'
+        }
+        const resposta = await databaseUsuario.atualizarUsuarioChekarHashSal(updateUsuario, usuarioId);
+        expect(resposta[0].dataValues.nome).toEqual(updateUsuario.nome);
+    })
+    it('Deve excluir autor no BD por ID', async () => {
         const resultado = await databaseUsuario.excluirDataBasePorId({ where: { id: usuarioId } });
         expect(resultado).toBe(true)
     });
