@@ -4,7 +4,7 @@
   "description": "Planilha de Orçamento",
   "main": "./db/api/index.js",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose --detectOpenHandles",
     "start": "nodemon ./db/api/index.js"
   },
   "author": "Leonardo luz",
