@@ -1,4 +1,4 @@
-const { beforeEach, afterEach, describe, it } = require('@jest/globals');
+const { beforeEach, afterEach, describe, it, expect } = require('@jest/globals');
 const request = require('supertest');
 const express = require('express');
 const router = require('../../db/api/routes');
@@ -22,17 +22,43 @@ describe('Testes de rotas em usuário', () => {
         email: process.env.EMAIl,
         senha: process.env.SENHA
     };
+    let token;
+    let userId;
     describe('POST - Usuários', () => {
-        it('Deve buscar todos usuários', async () => {
+        const usuario = {
+            nome: 'usuarioRotas',
+            email: 'usuariorotas@email.com',
+            senha: 'testando',
+            ativo: true
+        }
+        it('Deve logar usuário cadastrado', async () => {
             const respostas = await request(app)
                 .post('/usuario/login')
                 .send(login)
                 .expect(200)
-            console.log(respostas.body.infoToken)
+            expect(respostas.body.infoToken).toEqual(expect.any(String));
+            token = respostas.body.infoToken;
         })
-        it.skip('', () => {
+        it('Deve criar novo usuário passando token', async () => {
+            const respostas = await request(app)
+                .post('/usuarios')
+                .send(usuario)
+            expect(respostas.body).toEqual(expect.objectContaining({
+                id: expect.any(Number),
+                nome: usuario.nome,
+                email: usuario.email
+            }));
+            userId = respostas.body.id;
+        })
+    })
+    describe('DELETE - em usuário por Id', () => {
+        it('Deve deletar usuario por Id', async () => {
+            const resposta = await request(app)
+                .delete(`/usuarios/${userId}`)
+                .auth(token, { type: 'bearer' })
+            expect(resposta.body).toEqual(expect.objectContaining({ mensagem: expect.any(String) }));
+        })
 
-        })
     })
 
 })
