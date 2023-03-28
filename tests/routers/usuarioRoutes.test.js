@@ -2,6 +2,7 @@ const { beforeEach, afterEach, describe, it } = require('@jest/globals');
 const request = require('supertest');
 const express = require('express');
 const router = require('../../db/api/routes');
+require('dotenv').config();
 const app = express();
 
 router(app);
@@ -16,18 +17,23 @@ beforeEach(() => {
 afterEach(() => {
     server.close();
 })
-
-describe('POST - Usuários', () => {
+describe('Testes de rotas em usuário', () => {
     const login = {
-        email: "rodoserv@email.com",
-        senha: "testando"
-    }
-    it('Deve buscar todos usuários', async () => {
-        const respostas = await request(app)
-            .post('/usuario/login')
-            .send({email: login.email, senha: login.senha})
-            .expect(200)
-        console.log(respostas.body.infoToken)
+        email: process.env.EMAIl,
+        senha: process.env.SENHA
+    };
+    describe('POST - Usuários', () => {
+        it('Deve buscar todos usuários', async () => {
+            const respostas = await request(app)
+                .post('/usuario/login')
+                .send(login)
+                .expect(200)
+            console.log(respostas.body.infoToken)
+        })
+        it.skip('', () => {
 
+        })
     })
+
 })
+
