@@ -5,7 +5,7 @@ const { criarSenhaSalHash } = require('../../db/api/util/senhaSalHash');
 const databaseUsuario = new UsuariosServices();
 
 
-describe('Criar novo usuario', () => {
+describe('Testes unitários de Usuários', () => {
     const usuario = {
         nome: 'usuario',
         email: 'usuario@email.com',

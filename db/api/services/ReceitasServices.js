@@ -2,24 +2,27 @@ const Services = require('./Services.js')
 
 class ReceitasServices extends Services {
     constructor() {
-        super('Receitas')
-    }
-
+        super('Receitas');
+    };
     /* Verificar receitas duplicadas pelas descrições */
     async checkReceitasDuplicada(receitasDescricao, receitasData) {
-        const dbreceitassDescricao = await super.solicitarDataBase({ where: { descricao: receitasDescricao } })
+        const dbreceitassDescricao = await super.checarDataBase({ where: { descricao: receitasDescricao } });
         let resp = [];
-        dbreceitassDescricao.map(obj => {
-            if (obj.dataValues.data.slice(0, 7) === receitasData.slice(0, 7)) {
-                resp.push(obj.dataValues.data);
+        if (Object.keys(dbreceitassDescricao).length !== 0) {
+            dbreceitassDescricao.map(obj => {
+                if (obj.dataValues.data.slice(0, 7) === receitasData.slice(0, 7)) {
+                    resp.push(obj.dataValues.data);
+                }
+            })
+            if (Object.keys(resp).length === 0) {
+                return true;
+            } else {
+                return false;
             }
-        })
-        if (Object.keys(resp).length === 0) {
+        }else {
             return true;
-        } else {
-            return false;
-        }
-    }
+        }        
+    };
     /* Verificar receitas duplicadas pelas descrições e checar Id */
     async checkReceitasDuplicadaPorId(descricao, data, id) {
         const dbreceitassDescricao = await super.solicitarDataBase({ where: { descricao: descricao } })
@@ -41,17 +44,16 @@ class ReceitasServices extends Services {
         } else {
             return false;
         }
-    }
+    };
     /* Atualizar receita por id checando dados */
     async atualizarReceitasporId(dados, id) {
         const { descricao, data } = dados;
         if (await this.checkReceitasDuplicadaPorId(descricao, data, id)) {
-            return await super.modificarDataBasePorId(dados, { where: { id: Number(id) } })
+            return await super.modificarDataBasePorId(dados, { where: { id: Number(id) } });
         } else {
-            throw new Error(`Existe uma data repetida no mesmo mês!`)
+            throw new Error(`Existe uma data repetida no mesmo mês!`);
         }
-
-    }
+    };
     /* Criando receitas porém verificando se há dados repetidos */
     async criarReceitaNova(dados) {
         const { descricao, data } = dados;
@@ -60,7 +62,7 @@ class ReceitasServices extends Services {
         } else {
             throw new Error(`Existe uma data repetida no mesmo mês!`);
         }
-    }
+    };
     /* Listar receitas por Datas  */
     async verificarDatasReceitas({ ano, mes }) {
         const receitas = await super.solicitarDataBase();
@@ -71,7 +73,7 @@ class ReceitasServices extends Services {
         } else if (mes) {
             return this.listarReceitasPorMes(receitas, mes);
         }
-    }
+    };
     /* Listar receitas por mês */
     async listarReceitasPorMes(receitas, mes) {
         let checkDataMes = [];
@@ -85,7 +87,7 @@ class ReceitasServices extends Services {
         } else {
             return checkDataMes;
         }
-    }
+    };
     /* Listar receitas por ano */
     async listarReceitasPorAno(receitas, ano) {
         let checkDataAno = [];
@@ -99,7 +101,7 @@ class ReceitasServices extends Services {
         } else {
             return checkDataAno;
         }
-    }
+    };
     /* listar receitas por ano e mês */
     async listarReceitasPorAnoMes(receitas, { ano, mes }) {
         let checkDataMesAno = [];
@@ -113,9 +115,9 @@ class ReceitasServices extends Services {
         } else {
             return checkDataMesAno;
         }
-    }
+    };
     /* Resumo de despesas por mês */
-    async resumoReceitasDespesas(receitasData, despesasData, {mes, ano}) {
+    async resumoReceitasDespesas(receitasData, despesasData, { mes, ano }) {
         let categorias = ['Alimentação', 'Saúde', 'Moradia', 'Transporte', 'Educação', 'Lazer', 'Imprevistos', 'Outras'];
         let totReceitas = 0, totDespesas = 0;
         let letCat;
@@ -124,15 +126,15 @@ class ReceitasServices extends Services {
         if (receitasData) {
             receitasData.map(obj => {
                 totReceitas += Number(obj.valor)
-            });            
+            });
         }
         if (despesasData) {
             despesasData.map(obj => {
                 totDespesas += Number(obj.valor)
-            });            
+            });
         }
         const resumo = {
-            data: `${ano}-${mes}` ,
+            data: `${ano}-${mes}`,
             valorReceitas: Math.round(totReceitas, -1),
             valorDespesas: Math.round(totDespesas, -1),
             saldoFinal: Math.round((totReceitas - totDespesas), -1),
@@ -151,9 +153,9 @@ class ReceitasServices extends Services {
                     letSoma = 0;
                 }
             });
-        } 
+        }
         return resumo
-    }
+    };
 }
 
 module.exports = ReceitasServices
