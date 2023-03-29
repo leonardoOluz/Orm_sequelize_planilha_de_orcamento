@@ -83,7 +83,7 @@ class ReceitasServices extends Services {
             }
         })
         if (Object.values(checkDataMes).length === 0) {
-            return false //  throw new Error(`Não há informação com a data escolhida!`);
+            return false
         } else {
             return checkDataMes;
         }
@@ -97,7 +97,7 @@ class ReceitasServices extends Services {
             }
         })
         if (Object.values(checkDataAno).length === 0) {
-            return false //  throw new Error(`Não há receitas com a data informada!`);
+            return false
         } else {
             return checkDataAno;
         }

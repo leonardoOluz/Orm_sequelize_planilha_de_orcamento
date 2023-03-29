@@ -1,12 +1,7 @@
 const { describe, it, expect } = require('@jest/globals');
-const { ReceitasServices } = require('../../db/api/services');
-const { criarToken } = require('../../db/api/util/gerarJwt.js');
+const { ReceitasServices,DespesasServices } = require('../../db/api/services');
 const receitasDatabase = new ReceitasServices();
-require('dotenv').config();
-const usuario = {
-    nome: process.env.NOME,
-    email: process.env.EMAIL
-};
+const despesasDatabase = new DespesasServices();
 const receitas_teste = {
     id: 22,
     descricao: "Vale Trasporte",
@@ -18,7 +13,8 @@ const receitas_teste = {
 };
 let data;
 let usuarioId;
-const token = criarToken(usuario)
+let ano = '2023';
+let mes = '01';
 describe('Testes unitários de Receitas', () => {
     describe('Testes de receitas duplicadas, função checkReceitasDuplicada', () => {
         it('Deve checar receitas duplicadas por descrição e data e retornar true', async () => {
@@ -68,7 +64,7 @@ describe('Testes unitários de Receitas', () => {
                 .toThrowError(new Error(`Existe uma data repetida no mesmo mês!`));
         });
     });
-    describe('Teste de criar receitas', () => {
+    describe('Testes de criar receitas', () => {
         const newReceitas = {
             descricao: "Aluguel",
             valor: 750,
@@ -86,10 +82,40 @@ describe('Testes unitários de Receitas', () => {
                 .toThrowError(new Error(`Existe uma data repetida no mesmo mês!`));
         });
     });
+    describe('Testes de listagem de receitas', () => {
+        it('Deve retornar lista de receitas por mes e ano', async () => {
+            const resposta = await receitasDatabase.verificarDatasReceitas({ano:'2023',mes:'02'});
+            expect(resposta).toHaveLength(2);
+        });        
+        it('Deve retornar lista de receitas por mes', async () => {
+            const resposta = await receitasDatabase.verificarDatasReceitas({mes:'02'});
+            expect(resposta).toHaveLength(2);
+        });
+        it('Deve retornar lista de receitas por ano', async () => {
+            const resposta = await receitasDatabase.verificarDatasReceitas({ano:'2023'});
+            expect(resposta).toHaveLength(11);
+        });
+        it('Deve retornar lista de receitas passando Ano e Receitas Total', async () => {
+            const receitasPorAno = await receitasDatabase.solicitarDataBase();
+            const resposta = await receitasDatabase.listarReceitasPorAno(receitasPorAno, ano);
+            expect(resposta).toHaveLength(11);
+        });
+        it('Deve retornar lista de receitas passando Ano, mes e Receitas Total', async () => {  
+            const receitasPorAno = await receitasDatabase.solicitarDataBase();
+            const resposta = await receitasDatabase.listarReceitasPorAnoMes(receitasPorAno, {ano, mes});
+            expect(resposta).toHaveLength(3);
+        });
+        it('Deve retornar lista de receitas e despesas resumidas, passando Ano e mes', async () => {
+            const receitasTot = await receitasDatabase.verificarDatasReceitas({ano, mes});
+            const despesasTot = await despesasDatabase.verificarDatasDespesas({ano, mes});
+            const resposta = await receitasDatabase.resumoReceitasDespesas(receitasTot, despesasTot,{mes, ano},);
+            expect(resposta.data).toBe(`${ano}-${mes}`);
+        });
+    });
     describe('Teste de deletar receitas', () => {
         it('Deve deletar receita por id', async () => {
             const resultado = await receitasDatabase.excluirDataBasePorId({ where: { id: usuarioId } });
             expect(resultado).toBe(true);
         });
-    });   
+    });
 });
