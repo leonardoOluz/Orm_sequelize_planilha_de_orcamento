@@ -25,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    valor: {type: DataTypes.FLOAT,
+    valor: {
+      type: DataTypes.FLOAT,
       validate: {
         funcaoValidadora: function (dado) {
           if (dado === '') {
@@ -34,7 +35,8 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    data: {type: DataTypes.DATEONLY,
+    data: {
+      type: DataTypes.DATEONLY,
       validate: {
         funcaoValidadora: function (dado) {
           if (dado === '') {
@@ -43,7 +45,16 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    categoria: DataTypes.STRING
+    categoria: {
+      type: DataTypes.STRING,
+      validate: {
+        funcaoValidadora: function (dado) {
+          if (dado === '') {
+            this.categoria = 'Outras'
+          }
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Despesas',

@@ -43,8 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(200),
       allowNull: false
     },
-    ativo:
-    {
+    ativo: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       validate: {
