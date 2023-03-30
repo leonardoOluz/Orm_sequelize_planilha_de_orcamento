@@ -4,32 +4,28 @@ const express = require('express');
 const router = require('../../db/api/routes');
 require('dotenv').config();
 const app = express();
-
+const login = {
+    email: process.env.EMAIl,
+    senha: process.env.SENHA
+};
+let token;
+let userId;
 router(app);
-
 let server;
-
 beforeEach(() => {
     const port = 6060;
     server = app.listen(port)
 });
-
 afterEach(() => {
     server.close();
-})
+});
 const usuario = {
     nome: 'usuarioRotas',
     email: 'usuariorotas@email.com',
     senha: 'testando',
     ativo: true
 };
-describe('Testes de rotas em usuário', () => {
-    const login = {
-        email: process.env.EMAIl,
-        senha: process.env.SENHA
-    };
-    let token;
-    let userId;
+describe('Testes de rotas em usuário', () => {  
     describe('POST - Usuários', () => {
         it('Deve logar usuário cadastrado', async () => {
             const respostas = await request(app)

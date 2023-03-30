@@ -103,7 +103,7 @@ class ReceitasControllers {
     }
     /* Resumo de receitas e despesas por data */
     static async resumoDespesasReceitasPorData(req, res) {
-        const { mes, ano } = req.params;
+        const { ano, mes } = req.params;
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         try {

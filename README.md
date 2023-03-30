@@ -158,7 +158,7 @@ O resumo do mês deve conter as seguintes informações:
 * Saldo final no mês
 * Valor total gasto no mês em cada uma das categorias
 
-# Testes automatizados ⏳
+# Testes automatizados ✅
 
 Implemente testes automatizados dos endpoints da API, para garantir que as regras de negócio e informações devolvidas por ela estejam funcionando conforme o esperado.
 
