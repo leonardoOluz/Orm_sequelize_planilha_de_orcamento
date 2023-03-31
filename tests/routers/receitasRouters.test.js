@@ -18,7 +18,7 @@ const usuarioTest = {
     usuario_Id: 1
 };
 beforeEach(() => {
-    const port = 8080;
+    const port = process.env.PORT || 8082;
     server = app.listen(port);
 });
 afterEach(() => {

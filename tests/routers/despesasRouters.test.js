@@ -19,7 +19,7 @@ const despesas_teste = {
     categoria: ""
 };
 beforeEach(() => {
-    const port = 3000;
+    const port = process.env.PORT || 8081;
     server = app.listen(port);
 });
 afterEach(() => {

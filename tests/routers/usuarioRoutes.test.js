@@ -13,7 +13,7 @@ let userId;
 router(app);
 let server;
 beforeEach(() => {
-    const port = 6060;
+    const port = process.env.PORT || 8083;
     server = app.listen(port)
 });
 afterEach(() => {
